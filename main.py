@@ -1,26 +1,27 @@
 import tkinter as tk
-import math
-from PIL import Image, ImageTk
-from utility import rotate_radar,spawn_asteroid,updateAsteroids
+from utility import (
+    load_assets, animate_earth, rotate_radar,
+    spawn_asteroid, updateAsteroids, update_status
+)
+
+S_WIDTH = 1000
+S_HEIGHT = 500
+
 root = tk.Tk()
-root.title("Asteroid Radar Simulation")
-asteroids = []
+root.geometry(f"{S_WIDTH}x{S_HEIGHT}")
+root.title("Asteroid Radar System")
 
-swidth = 1000
-shight = 500
-
-root.geometry(f"{swidth}x{shight}")
-
-canvas = tk.Canvas(root,width=swidth,height=shight,bg="black")
+canvas = tk.Canvas(root, width=S_WIDTH, height=S_HEIGHT)
 canvas.pack()
 
-radar_img = Image.open("./asset/radar.png").resize((250,250))
+assets = load_assets(canvas, S_WIDTH, S_HEIGHT)
 
-tk_radar = ImageTk.PhotoImage(radar_img)
+asteroids = []
 
-angle =0
+animate_earth(canvas, S_WIDTH, S_HEIGHT, assets, root)
+rotate_radar(canvas, S_WIDTH, S_HEIGHT, 0, assets, root)
+spawn_asteroid(canvas, asteroids, assets, root)
+updateAsteroids(canvas, asteroids, root)
+# update_status(canvas, asteroids, assets, root)
 
-rotate_radar(canvas,swidth,shight,angle,tk_radar,radar_img,root)
-spawn_asteroid(canvas,asteroids,root)
-updateAsteroids(canvas,root,asteroids)
 root.mainloop()
